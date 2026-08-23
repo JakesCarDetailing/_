@@ -111,4 +111,55 @@
   } else {
     revealEls.forEach((el) => el.classList.add('in'));
   }
+
+  // Quote form — submit via fetch (Web3Forms) instead of mailto,
+  // so it works with no email client, and we get inline success/error state.
+  const quoteForm = document.getElementById('quoteForm');
+  const quoteSubmit = document.getElementById('quoteSubmit');
+  const quoteStatus = document.getElementById('quoteFormStatus');
+
+  if (quoteForm && quoteStatus) {
+    quoteForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const accessKey = quoteForm.querySelector('[name="access_key"]')?.value || '';
+      if (!accessKey || accessKey === 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY') {
+        quoteStatus.className = 'form-status show error';
+        quoteStatus.textContent =
+          "Form isn't fully connected yet — call or text " +
+          '+1 877 552 8664 and we’ll get you booked directly.';
+        return;
+      }
+
+      quoteSubmit.disabled = true;
+      quoteSubmit.textContent = 'Sending…';
+      quoteStatus.className = 'form-status show sending';
+      quoteStatus.textContent = 'Sending your request…';
+
+      try {
+        const res = await fetch(quoteForm.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(quoteForm),
+        });
+        const result = await res.json().catch(() => ({}));
+
+        if (res.ok && result.success !== false) {
+          quoteStatus.className = 'form-status show success';
+          quoteStatus.textContent =
+            "Thanks — we've got your request and will follow up shortly.";
+          quoteForm.reset();
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+      } catch (err) {
+        quoteStatus.className = 'form-status show error';
+        quoteStatus.textContent =
+          'Something went wrong sending that. Call or text +1 877 552 8664 and we’ll get you sorted.';
+      } finally {
+        quoteSubmit.disabled = false;
+        quoteSubmit.textContent = 'Submit';
+      }
+    });
+  }
 })();
