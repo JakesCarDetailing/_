@@ -1,0 +1,612 @@
+<title>Jake's Wix Build Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ink-950:#05070c; --ink-900:#0a0e17; --ink-800:#10151f;
+    --ink-700:#161c29; --ink-600:#1e2635; --ink-850:#0d1219;
+    --line:rgba(255,255,255,.09); --line-strong:rgba(255,255,255,.16);
+    --t0:#f6f8fb; --t1:#c7cedb; --t2:#8b96a9; --t3:#5c6579;
+    --blue-300:#7fb0ff; --blue-400:#4c8dff; --blue-500:#1a66e8;
+    --amber:#e8b13a; --green:#5fcf8e;
+    --display:"Jura","Helvetica Neue",Arial,sans-serif;
+    --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+    --wrap:920px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ink-900); color:var(--t1);
+    font-family:var(--body); font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--wrap); margin:0 auto; padding:0 24px}
+
+  /* ---------- masthead ---------- */
+  .mast{
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(120% 100% at 78% 0%, rgba(26,102,232,.20), transparent 62%),
+      var(--ink-950);
+    padding:64px 0 44px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--blue-300); margin:0;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--blue-400); opacity:.8}
+  h1{
+    font-family:var(--display); font-weight:700; color:var(--t0);
+    font-size:clamp(30px,5vw,46px); line-height:1.12; letter-spacing:-.01em;
+    margin:18px 0 0; text-wrap:balance;
+  }
+  h1 em{font-style:normal; color:var(--blue-300)}
+  .standfirst{max-width:62ch; margin:18px 0 0; color:var(--t2); font-size:17px}
+
+  .links{display:flex; flex-wrap:wrap; gap:10px; margin-top:30px}
+  .links a{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.04em;
+    text-decoration:none; color:var(--t0);
+    border:1px solid var(--line-strong); border-radius:999px;
+    padding:9px 17px; background:rgba(255,255,255,.03);
+    transition:border-color .15s, background .15s;
+  }
+  .links a:hover{border-color:var(--blue-400); background:rgba(26,102,232,.14)}
+  .links a.primary{background:var(--blue-500); border-color:var(--blue-500); color:#fff}
+  .links a.primary:hover{background:var(--blue-400); border-color:var(--blue-400)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--blue-300); outline-offset:2px}
+
+  /* ---------- status ---------- */
+  .status{
+    display:grid; gap:1px; background:var(--line);
+    border:1px solid var(--line); border-radius:12px; overflow:hidden;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); margin:40px 0 0;
+  }
+  .status div{background:var(--ink-800); padding:16px 18px}
+  .status dt{
+    font-family:var(--mono); font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--t3); margin:0 0 6px;
+  }
+  .status dd{margin:0; color:var(--t0); font-size:14.5px; font-weight:500}
+  .status .ok dd{color:var(--green)}
+  .status .todo dd{color:var(--amber)}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  h2{
+    font-family:var(--display); font-weight:700; color:var(--t0);
+    font-size:clamp(22px,3vw,30px); line-height:1.2; margin:14px 0 0;
+    text-wrap:balance;
+  }
+  .lede{max-width:68ch; color:var(--t2); margin:14px 0 0; font-size:15.5px}
+  h3{
+    font-family:var(--display); font-weight:600; color:var(--t0);
+    font-size:18px; margin:34px 0 0;
+  }
+  h4{
+    font-family:var(--mono); font-weight:500; color:var(--blue-300);
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    margin:26px 0 10px;
+  }
+  p{margin:12px 0 0}
+  .step-n{
+    font-family:var(--mono); font-size:12px; color:var(--t3);
+    letter-spacing:.14em; text-transform:uppercase;
+  }
+
+  /* ---------- copy blocks ---------- */
+  .copy{
+    position:relative; margin:12px 0 0;
+    border:1px solid var(--line); border-left:2px solid var(--blue-500);
+    border-radius:8px; background:var(--ink-800);
+  }
+  .copy pre{
+    margin:0; padding:15px 52px 15px 17px; overflow-x:auto;
+    font-family:var(--mono); font-size:13.5px; line-height:1.6;
+    color:var(--t0); white-space:pre-wrap; word-break:break-word;
+  }
+  .copy button{
+    position:absolute; top:9px; right:9px;
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; cursor:pointer;
+    color:var(--t2); background:var(--ink-700);
+    border:1px solid var(--line-strong); border-radius:5px; padding:5px 9px;
+    transition:color .15s, border-color .15s;
+  }
+  .copy button:hover{color:var(--t0); border-color:var(--blue-400)}
+  .copy button.done{color:var(--green); border-color:var(--green)}
+  .copy-label{
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--t3); margin:22px 0 0;
+  }
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto; margin:14px 0 0; border:1px solid var(--line); border-radius:10px}
+  table{border-collapse:collapse; width:100%; min-width:460px; font-size:14px}
+  th,td{text-align:left; padding:11px 15px; border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  th{
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--t3); font-weight:500;
+    background:var(--ink-800);
+  }
+  td{color:var(--t1); background:var(--ink-850)}
+  td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--blue-300)}
+  td.file{font-family:var(--mono); font-size:12.5px; color:var(--t0)}
+  td strong{color:var(--t0); font-weight:600}
+
+  /* ---------- swatches ---------- */
+  .swatches{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(146px,1fr));
+    gap:10px; margin:14px 0 0; padding:0; list-style:none;
+  }
+  .swatches li{
+    border:1px solid var(--line); border-radius:9px;
+    background:var(--ink-800); overflow:hidden;
+  }
+  .chip{height:52px; display:block; border-bottom:1px solid var(--line)}
+  .swatches .meta{padding:10px 12px}
+  .swatches b{
+    display:block; font-family:var(--mono); font-size:12.5px;
+    color:var(--t0); font-weight:500;
+  }
+  .swatches span{display:block; font-size:11.5px; color:var(--t3); margin-top:3px}
+
+  /* ---------- callouts ---------- */
+  .note{
+    margin:22px 0 0; padding:15px 18px; border-radius:9px;
+    background:var(--ink-800); border:1px solid var(--line);
+    border-left:2px solid var(--t3); font-size:14.5px; color:var(--t1);
+  }
+  .note.warn{border-left-color:var(--amber); background:rgba(232,177,58,.06)}
+  .note.warn b{color:var(--amber)}
+  .note b{color:var(--t0)}
+
+  ul.plain{margin:12px 0 0; padding-left:20px}
+  ul.plain li{margin:6px 0; color:var(--t1)}
+  ul.plain li::marker{color:var(--blue-400)}
+
+  footer{padding:44px 0 64px; color:var(--t3); font-size:13.5px}
+  footer p{max-width:70ch}
+  code{
+    font-family:var(--mono); font-size:.9em;
+    background:var(--ink-700); padding:1px 5px; border-radius:4px; color:var(--t0);
+  }
+  a{color:var(--blue-300)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="mast">
+  <div class="wrap">
+    <p class="eyebrow">Wix Editor Build Spec</p>
+    <h1>Rebuilding the site, <em>section by section.</em></h1>
+    <p class="standfirst">Your new Wix site is created and your photos are loaded. Everything below is the exact content to place — real copy, real prices, real filenames. Work top to bottom; each block is click-to-copy.</p>
+    <div class="links">
+      <a class="primary" href="https://editor.wix.com/edit/od/f95a1fae-8f2f-4f59-a21e-920ab21a0392?metaSiteId=d3eb7662-e4ac-42f6-b59e-8fa41a16a2b1" target="_blank" rel="noopener">Open the editor →</a>
+      <a href="https://editor.wix.com/html/editor/web/renderer/external_preview/document/f95a1fae-8f2f-4f59-a21e-920ab21a0392?metaSiteId=d3eb7662-e4ac-42f6-b59e-8fa41a16a2b1" target="_blank" rel="noopener">Preview</a>
+      <a href="https://jakescardetailing.github.io/_/" target="_blank" rel="noopener">The original</a>
+    </div>
+
+    <dl class="status">
+      <div class="ok"><dt>Template</dt><dd>Auto Detailing (Polished)</dd></div>
+      <div class="ok"><dt>Photos uploaded</dt><dd>12 of 12</dd></div>
+      <div class="todo"><dt>Sections to build</dt><dd>8</dd></div>
+      <div class="todo"><dt>Domain</dt><dd>Move at the end</dd></div>
+    </dl>
+  </div>
+</div>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 00</p>
+    <h2>Set the palette and fonts first</h2>
+    <p class="lede">Do this before touching any section. In Wix these are global — set them once and every element you add afterwards inherits them, instead of you recoloring each text box by hand.</p>
+
+    <h4>Site colors → Change site palette</h4>
+    <ul class="swatches">
+      <li><span class="chip" style="background:#0a0e17"></span><span class="meta"><b>#0a0e17</b><span>Page background</span></span></li>
+      <li><span class="chip" style="background:#10151f"></span><span class="meta"><b>#10151f</b><span>Alternating sections</span></span></li>
+      <li><span class="chip" style="background:#161c29"></span><span class="meta"><b>#161c29</b><span>Cards, panels</span></span></li>
+      <li><span class="chip" style="background:#1a66e8"></span><span class="meta"><b>#1a66e8</b><span>Buttons</span></span></li>
+      <li><span class="chip" style="background:#7fb0ff"></span><span class="meta"><b>#7fb0ff</b><span>Labels, prices</span></span></li>
+      <li><span class="chip" style="background:#f6f8fb"></span><span class="meta"><b>#f6f8fb</b><span>Headings</span></span></li>
+      <li><span class="chip" style="background:#c7cedb"></span><span class="meta"><b>#c7cedb</b><span>Body text</span></span></li>
+      <li><span class="chip" style="background:#8b96a9"></span><span class="meta"><b>#8b96a9</b><span>Secondary text</span></span></li>
+    </ul>
+
+    <h4>Site fonts → Change text theme</h4>
+    <div class="scroll"><table>
+      <thead><tr><th>Role</th><th>Font</th><th>Weight &amp; treatment</th></tr></thead>
+      <tbody>
+        <tr><td><strong>All headings</strong></td><td class="file">Jura</td><td>700, tight line height</td></tr>
+        <tr><td><strong>Body text</strong></td><td class="file">Jura</td><td>400, 16px, line height 1.6</td></tr>
+        <tr><td><strong>Small labels</strong></td><td class="file">IBM Plex Mono</td><td>500, uppercase, letter-spacing 0.14em</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Both fonts are in Wix's library.</b> Search them by name in the font picker — no upload needed. The little uppercase labels above each heading ("Services &amp; Pricing", "Recent Work") are the mono font; everything else is Jura.</p>
+
+    <h4>Buttons</h4>
+    <p>Fill <code>#1a66e8</code>, white text, <b>fully rounded</b> corners (pill shape), no border. Secondary buttons: transparent fill, white text, 1px border at <code>rgba(255,255,255,.16)</code>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 01</p>
+    <h2>Header</h2>
+    <p class="lede">Sticky to the top. Logo left, menu centre, phone and button right.</p>
+    <p class="copy-label">Logo image</p>
+    <p><code>logo-mark.png</code> — set height to about 34px.</p>
+    <p class="copy-label">Menu items, in order</p>
+    <div class="copy"><pre>Services
+Gallery
+About
+Service Area
+FAQ</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Phone (make it a click-to-call link)</p>
+    <div class="copy"><pre>+1 877 552 8664</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Button label, linking to your booking shop</p>
+    <div class="copy"><pre>Book a Detail</pre><button type="button">Copy</button></div>
+    <div class="copy"><pre>https://app.urable.com/virtual-shop/gp8eAvjBryjv6zHmoeiD</pre><button type="button">Copy</button></div>
+    <p class="note"><b>Set this link to open in a new tab.</b> It appears nine times across the finished site — header, hero, every service card, the about section, and the footer. Same URL every time.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 02</p>
+    <h2>Hero</h2>
+    <p class="lede">Full-width photo background with the headline over it, and the quote form to its right.</p>
+    <p class="copy-label">Background image</p>
+    <p><code>hero-exterior.jpg</code> — darken it with a black overlay around 55–65% so the text stays readable.</p>
+    <p class="copy-label">Headline — set "to your driveway." in the light blue #7fb0ff</p>
+    <div class="copy"><pre>We bring the shop to your driveway.</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Sub-headline</p>
+    <div class="copy"><pre>Exterior washes, interior resets, and full details — done at your home or office with our own water and power. No drop-off, no waiting room, just a few hours of your driveway.</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Two buttons</p>
+    <div class="copy"><pre>Book a Detail
+Where We Go</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Trust badges — small pill shapes, faint white background</p>
+    <div class="copy"><pre>Fully Insured
+🇨🇦 Proudly Canadian</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Three stat blocks under the badges</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Label</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Based in</td><td><strong>Agassiz, BC</strong></td></tr>
+        <tr><td>Serving</td><td><strong>Fraser Valley &amp; Greater Vancouver</strong></td></tr>
+        <tr><td>Vehicles</td><td><strong>Everyday commuters to performance &amp; luxury</strong></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>The quote form</h3>
+    <p>Add a <b>Wix Form</b> here and set it to email <code>info@jakescardetailing.ca</code>. Heading and intro:</p>
+    <div class="copy"><pre>Request a quote
+Tell us about your vehicle and we'll follow up with a recommendation — usually the same day.</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Fields, in order</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th></tr></thead>
+      <tbody>
+        <tr><td><strong>First name</strong></td><td>Short text</td><td>Yes</td></tr>
+        <tr><td><strong>Last name</strong></td><td>Short text</td><td>Yes</td></tr>
+        <tr><td><strong>Email</strong></td><td>Email</td><td>Yes</td></tr>
+        <tr><td><strong>Phone</strong></td><td>Phone</td><td>Yes</td></tr>
+        <tr><td><strong>Vehicle Year, Make, Model</strong></td><td>Short text, placeholder "e.g. 2021 Mazda3"</td><td>Yes</td></tr>
+        <tr><td><strong>Type of Detail</strong></td><td>Checkbox group</td><td>No</td></tr>
+        <tr><td><strong>Additional Add-ons</strong></td><td>Checkbox group</td><td>No</td></tr>
+        <tr><td><strong>Frequency Of Service</strong></td><td>Dropdown</td><td>Yes</td></tr>
+      </tbody>
+    </table></div>
+    <p class="copy-label">Type of Detail — checkbox options</p>
+    <div class="copy"><pre>Full Exterior &amp; Interior
+Exterior
+Interior
+Mold Remediation
+Polishing
+Ceramic Coatings</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Additional Add-ons — checkbox options</p>
+    <div class="copy"><pre>Clay Bar Treatment
+Headlight Restoration
+Leather Conditioning
+Dressing for Plastics
+Booster Seats
+Steam cleaning
+Pet Hair
+Shampooing - Stain removal
+Extraction
+Headliner</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Frequency Of Service — dropdown options</p>
+    <div class="copy"><pre>One time
+Weekly
+Bi-Weekly
+Monthly
+Semi Monthly
+Quarterly
+Semi Annually
+Annually</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Helper text under the dropdown, then the button and the note beneath it</p>
+    <div class="copy"><pre>This gives immediate insight for reoccurring services.
+Submit
+We'll get an instant alert and follow up fast — usually the same day.</pre><button type="button">Copy</button></div>
+    <div class="note warn"><b>Worth knowing:</b> the form on your current site never worked. Its submission key was left as a placeholder, so anything anyone typed into it went nowhere. Building it as a Wix Form here is the first time it will actually reach your inbox — so send yourself a test once it's live.</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 03</p>
+    <h2>Services &amp; Pricing</h2>
+    <p class="copy-label">Section heading</p>
+    <div class="copy"><pre>SERVICES &amp; PRICING
+Four packages, priced by vehicle size.
+Every price below comes straight from our online booking system, so what you see here is what you'll pay. Pick a package, choose your vehicle size at checkout, and book straight in.</pre><button type="button">Copy</button></div>
+    <p>Four cards in three labelled groups. Each card: name, "From $X", description, the price table, duration, and a <b>Book</b> button.</p>
+
+    <h4>Group 1 — Exterior · Wash &amp; Shine</h4>
+
+    <h3>Ordinary Wash — from $49.99 · ~30 min</h3>
+    <div class="copy"><pre>A quick, affordable exterior refresh. We clear surface debris, apply a touch-less soap so grime never gets a chance to scratch the paint, then hand-wash with a proper wash mitt and towel-dry to finish.</pre><button type="button">Copy</button></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Vehicle</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>Coupe/Sedan</td><td class="num">$49.99</td></tr>
+        <tr><td>Small/Mid SUV</td><td class="num">$59.99</td></tr>
+        <tr><td>Compact Truck</td><td class="num">$59.99</td></tr>
+        <tr><td>4 Door Truck</td><td class="num">$74.99</td></tr>
+        <tr><td>Large SUV</td><td class="num">$74.99</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Exterior Detail — from $149.99 · ~1 hr 30 min</h3>
+    <div class="copy"><pre>A thorough exterior cleaning — the reset that makes a car feel worth driving again. Surface debris removal, a complete wheel and wheel-well cleaning, touch-less soap, hand wash, and a towel-dry finish.</pre><button type="button">Copy</button></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Vehicle</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>Coupe/Sedan</td><td class="num">$149.99</td></tr>
+        <tr><td>Small/Mid SUV</td><td class="num">$159.99</td></tr>
+        <tr><td>Compact Truck</td><td class="num">$169.00</td></tr>
+        <tr><td>4 Door Truck</td><td class="num">$175.99</td></tr>
+        <tr><td>Large SUV</td><td class="num">$175.99</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4>Group 2 — Interior · Deep Clean</h4>
+
+    <h3>Interior Detail — from $175.99 · ~1 hr 45 min</h3>
+    <div class="copy"><pre>Our full interior procedure. An intense blowout of every nook and cranny, upholstery vacuumed to a spotless finish, plastic, leather, doors and seats scrubbed and cleaned, floor mats washed, and streak-free interior glass.</pre><button type="button">Copy</button></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Vehicle</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>Coupe</td><td class="num">$175.99</td></tr>
+        <tr><td>Sedan</td><td class="num">$199.99</td></tr>
+        <tr><td>2 Door Truck</td><td class="num">$175.99</td></tr>
+        <tr><td>4 Door Truck</td><td class="num">$265.99</td></tr>
+        <tr><td>Small/Mid SUV</td><td class="num">$249.99</td></tr>
+        <tr><td>Extended Cab</td><td class="num">$199.99</td></tr>
+        <tr><td>Large SUV</td><td class="num">$279.99</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4>Group 3 — Full Detail · Inside &amp; Out</h4>
+
+    <h3>Our Standard Detail — from $309.99 · ~3 hrs 5 min</h3>
+    <div class="copy"><pre>The full reset, inside and out. Everything from the Exterior Detail — wash, wheels, wheel wells — plus everything from the Interior Detail: vacuum, upholstery, plastics, mats, and streak-free glass.</pre><button type="button">Copy</button></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Vehicle</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td>Coupe/Sedan</td><td class="num">$309.99</td></tr>
+        <tr><td>Small/Mid SUV</td><td class="num">$324.99</td></tr>
+        <tr><td>2 Door Truck</td><td class="num">$324.99</td></tr>
+        <tr><td>Large SUV</td><td class="num">$349.99</td></tr>
+        <tr><td>Large Truck</td><td class="num">$349.99</td></tr>
+      </tbody>
+    </table></div>
+
+    <p class="copy-label">Note under all four cards</p>
+    <div class="copy"><pre>Pricing shown is for mobile ("we come to you") appointments and may vary with distance from Agassiz. Exact totals are confirmed at checkout.</pre><button type="button">Copy</button></div>
+    <p class="note"><b>On the original, the price tables were hidden behind a "See pricing by vehicle" toggle.</b> Wix has no simple equivalent, so just show the tables. Fewer clicks between a customer and your prices is not a downgrade.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 04</p>
+    <h2>Gallery</h2>
+    <p class="lede">Use a Wix Pro Gallery with captions on. Give this section the <code>#10151f</code> background so it separates from the sections either side.</p>
+    <p class="copy-label">Section heading</p>
+    <div class="copy"><pre>RECENT WORK
+Real cars, real driveways.
+No stock photography — every shot here is a vehicle we've actually detailed around Agassiz, the Fraser Valley, and Greater Vancouver.</pre><button type="button">Copy</button></div>
+    <div class="scroll"><table>
+      <thead><tr><th>#</th><th>File in Media Manager</th><th>Caption</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="file">gallery-exterior-2.jpg</td><td><strong>Exterior Detail</strong> — Porsche Cayman</td></tr>
+        <tr><td class="num">2</td><td class="file">gallery-interior-1.jpg</td><td><strong>Interior Reset</strong> — BMW 3 Series</td></tr>
+        <tr><td class="num">3</td><td class="file">gallery-interior-2.jpg</td><td><strong>Interior Reset</strong> — BMW 3 Series, rear seats</td></tr>
+        <tr><td class="num">4</td><td class="file">process-1.jpg</td><td><strong>On the job</strong> — Dash detailing</td></tr>
+        <tr><td class="num">5</td><td class="file">process-2.jpg</td><td><strong>On the job</strong> — Steam extraction</td></tr>
+        <tr><td class="num">6</td><td class="file">gallery-interior-3.jpg</td><td><strong>Interior Detail</strong> — Mazda3</td></tr>
+        <tr><td class="num">7</td><td class="file">gallery-interior-4.jpg</td><td><strong>Interior Detail</strong> — Ram 1500</td></tr>
+        <tr><td class="num">8</td><td class="file">gallery-interior-5.jpg</td><td><strong>Interior Detail</strong> — Hyundai Santa Fe</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Turn on <b>expand on click</b> in the gallery settings — that reproduces the lightbox the original had, with no extra work.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 05</p>
+    <h2>About</h2>
+    <p class="lede">Two photos on the left, overlapping slightly; copy on the right.</p>
+    <p class="copy-label">Images</p>
+    <p><code>about-1.jpg</code> (larger, behind) and <code>mobile-setup.jpg</code> (smaller, overlapping in front).</p>
+    <p class="copy-label">Heading and body</p>
+    <div class="copy"><pre>WHY JAKE'S
+One appointment. Not a drop-off.
+
+Jake's Car Detailing is based in Agassiz and works out of the back of a truck, not a shop. We show up with our own water, power, and equipment, so your car gets detailed in your driveway while you get on with your day.
+
+Every job on this site is one we've actually done — from daily commuters to the occasional Porsche — because a photo of someone else's car doesn't tell you much about what we'll do with yours.</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Checklist — use a blue check icon on each line</p>
+    <div class="copy"><pre>We bring our own water, power, and equipment
+One vehicle at a time — no queue, no drop-off
+Pricing by vehicle size, shown up front, no surprises at pickup
+Book online, or just call — we're happy to walk you through packages</pre><button type="button">Copy</button></div>
+    <p>Finish with a <b>Book a Detail</b> button.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 06</p>
+    <h2>Service Area</h2>
+    <p class="lede">Background <code>#10151f</code> again. Copy on the left, the location list on the right as a vertical route — a dot per stop joined by a thin line, with Agassiz's dot filled blue.</p>
+    <p class="copy-label">Left side</p>
+    <div class="copy"><pre>WHERE WE GO
+Based in Agassiz. Happy to drive.
+
+We're centred on Agassiz and regularly detail vehicles across the surrounding Fraser Valley, with bookings across Greater Vancouver by appointment. Outside these areas? Ask anyway — if it's a reasonable drive, we'll usually make it work.
+
+Note: service-area list below is our general coverage — confirm your exact address at booking, since pricing on some packages can shift a little with distance from Agassiz.</pre><button type="button">Copy</button></div>
+    <p class="copy-label">The route list</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Stop</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Agassiz</strong></td><td>Home base</td></tr>
+        <tr><td><strong>Harrison Hot Springs</strong></td><td>~10 min away</td></tr>
+        <tr><td><strong>Rosedale &amp; Popkum</strong></td><td>~15 min away</td></tr>
+        <tr><td><strong>Chilliwack</strong></td><td>~25 min away</td></tr>
+        <tr><td><strong>Hope</strong></td><td>~30 min away</td></tr>
+        <tr><td><strong>Greater Vancouver</strong></td><td>By appointment</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 07</p>
+    <h2>FAQ</h2>
+    <p class="lede">Wix has an accordion element — use it, and leave every item collapsed by default.</p>
+    <p class="copy-label">Section heading</p>
+    <div class="copy"><pre>GOOD TO KNOW
+Frequently asked questions.</pre><button type="button">Copy</button></div>
+
+    <h4>Question 1</h4>
+    <div class="copy"><pre>What do you need from me on the day?
+
+Just access to an outdoor water tap and a standard power outlet at the address. If either isn't available, let us know when you book and we'll figure out a plan.</pre><button type="button">Copy</button></div>
+
+    <h4>Question 2</h4>
+    <div class="copy"><pre>Do I need to be home during the appointment?
+
+Not necessarily — as long as we can access the vehicle, water, and power, plenty of customers leave us to it. We'll confirm the details with you when you book.</pre><button type="button">Copy</button></div>
+
+    <h4>Question 3</h4>
+    <div class="copy"><pre>What happens if it's raining?
+
+Exterior work is weather-dependent — if rain is forecast for your appointment, we'll reach out to reschedule. Interior-only details can often still go ahead under a carport or garage.</pre><button type="button">Copy</button></div>
+
+    <h4>Question 4</h4>
+    <div class="copy"><pre>How much does it actually cost?
+
+Every package above lists pricing by vehicle size, pulled straight from our booking system. Distance from Agassiz can adjust the total slightly — you'll see the exact price before you confirm at checkout.</pre><button type="button">Copy</button></div>
+
+    <h4>Question 5</h4>
+    <div class="copy"><pre>Do you travel outside the Fraser Valley?
+
+Our regular coverage is Agassiz, Harrison Hot Springs, Rosedale, Popkum, Chilliwack, and Hope — see the Service Area section above. We also take bookings across Greater Vancouver by appointment. Outside that, get in touch and we'll let you know if it's workable.</pre><button type="button">Copy</button></div>
+
+    <h4>Question 6</h4>
+    <div class="copy"><pre>How do I book?
+
+Easiest way is our online shop — pick a package, choose your vehicle size, and book a time. Prefer to talk it through first? Call or text +1 877 552 8664, or email info@jakescardetailing.ca.</pre><button type="button">Copy</button></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Step 08</p>
+    <h2>Footer and mobile bar</h2>
+    <p class="copy-label">Footer — logo, then three columns</p>
+    <div class="copy"><pre>Explore
+Services
+Gallery
+About
+Service Area
+
+Contact
++1 877 552 8664
+info@jakescardetailing.ca
+Agassiz, BC
+
+Booking
+Online Shop ↗</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Bottom bar</p>
+    <div class="copy"><pre>© 2026 Jake's Car Detailing. All rights reserved.
+Agassiz, the Fraser Valley &amp; Greater Vancouver</pre><button type="button">Copy</button></div>
+
+    <h3>Sticky mobile call bar</h3>
+    <p>The original pinned two buttons to the bottom of the screen on phones. In Wix, add a strip pinned to the bottom, set it to show on mobile only, with two buttons:</p>
+    <div class="copy"><pre>Call Now
+Text Us</pre><button type="button">Copy</button></div>
+    <p>Link the first to <code>tel:+18775528664</code> and the second to <code>sms:+18775528664</code>.</p>
+
+    <h3>Page SEO</h3>
+    <p class="copy-label">Title</p>
+    <div class="copy"><pre>Jake's Car Detailing — Mobile Detailing in Agassiz, BC</pre><button type="button">Copy</button></div>
+    <p class="copy-label">Meta description</p>
+    <div class="copy"><pre>Jake's Car Detailing brings full exterior washes, interior resets, and complete detailing to your driveway across Agassiz, the Fraser Valley, and Greater Vancouver. Book online.</pre><button type="button">Copy</button></div>
+    <p>Also set the favicon to <code>logo-mark.png</code>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="step-n">Last</p>
+    <h2>Moving the domain</h2>
+    <p class="lede">Only once you're happy with the built site — there's no rush, and nothing breaks while you work.</p>
+    <p><code>jakescardetailing.ca</code> is currently connected to your other Wix site, the Premium one. Because both sites are inside the same Wix account, this is a reassignment, not a DNS change — your nameservers stay exactly as they are.</p>
+    <ul class="plain">
+      <li>Publish the new site and click through it on a phone as well as a laptop.</li>
+      <li>Send yourself a test through the quote form and confirm it arrives.</li>
+      <li>Move the Premium plan from the old site to this one, then connect the domain.</li>
+      <li>Keep the old site — unpublished, not deleted — for a few weeks as a fallback.</li>
+    </ul>
+    <div class="note warn"><b>Don't delete anything until the new site has been live on the domain for a week or two.</b> Your GitHub original stays online at its <code>github.io</code> address regardless, so you always have the reference to compare against.</div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Every price, caption, and paragraph here was read directly out of your existing site's source, so it matches what's live today rather than being retyped from memory. The two deliberate departures from the original — showing the price tables instead of hiding them behind a toggle, and building the quote form so it actually sends — are both flagged in place above.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('pre').innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Copied';
+        btn.classList.add('done');
+        setTimeout(function () {
+          btn.textContent = 'Copy';
+          btn.classList.remove('done');
+        }, 1600);
+      }).catch(function () {
+        btn.textContent = 'Select it';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+      });
+    });
+  });
+</script>
