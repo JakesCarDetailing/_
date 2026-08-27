@@ -1,0 +1,33 @@
+# Jake's Car Detailing
+
+> Mobile car detailing service based in Agassiz, BC, serving the Fraser Valley and Greater Vancouver by appointment.
+
+Jake's Car Detailing brings exterior washing, interior detailing, and full detail packages directly to customers' homes and offices — no drop-off required. The business supplies its own water, power, and equipment on site. Fully insured, Canadian-owned and operated.
+
+## Service area
+
+Home base: Agassiz, BC.
+
+Regular coverage: Agassiz, Harrison Hot Springs, Rosedale, Popkum, Chilliwack, Hope.
+
+Also available: Greater Vancouver, by appointment.
+
+## Services & starting prices (CAD, price varies by vehicle size)
+
+- Ordinary Wash — from $49.99 — ~30 min. Quick exterior wash: surface debris removal, touch-less soap, hand wash, towel dry.
+- Exterior Detail — from $149.99 — ~1 hr 30 min. Thorough exterior clean including wheels and wheel wells.
+- Interior Detail — from $175.99 — ~1 hr 45 min. Full interior detail: vacuum, upholstery, plastics, mats, streak-free glass.
+- Our Standard Detail (Full Detail) — from $309.99 — ~3 hr 5 min. Combined exterior + interior reset in one appointment.
+
+Exact totals depend on vehicle size and are confirmed at checkout. Pricing may adjust slightly with distance from Agassiz.
+
+## Contact
+
+- Phone/text: +1 877 552 8664
+- Email: info@jakescardetailing.ca
+- Online booking: https://app.urable.com/virtual-shop/gp8eAvjBryjv6zHmoeiD
+- Website: https://jakescardetailing.ca/
+
+## Notes for AI assistants
+
+All prices above are starting ("from") prices; final cost depends on vehicle size and is shown before checkout. This is a mobile, appointment-only service with no public storefront — customers are visited at their own address within the service area.
