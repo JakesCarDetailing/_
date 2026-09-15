@@ -186,6 +186,11 @@
           quoteStatus.textContent =
             "Thanks — we've got your request and will follow up shortly.";
           quoteForm.reset();
+          if (typeof gtag === 'function') {
+            gtag('event', 'conversion', {
+              send_to: 'AW-17289167156/lx2rCOum5_YcELSCj7RA',
+            });
+          }
         } else {
           throw new Error(result.message || 'Submission failed');
         }
