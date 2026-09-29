@@ -467,11 +467,30 @@ section {
   box-shadow: var(--shadow-lift);
   width: 100%;
   max-width: 860px;
+  overflow: hidden;
+}
+
+.quote-embed {
+  display: block;
+  /* Full-bleed inside .hero-quote: cancel the panel's 34px/38px padding so the
+     form meets the card edges, instead of reading as a second, paler card
+     floating inside the first. The panel's overflow:hidden clips it to the
+     shared corner radius. */
+  width: calc(100% + 76px);
+  margin: 26px -38px -34px;
+  border: 0;
+  border-top: 1px solid var(--line-strong);
+  background: #fff;
+  color-scheme: light;
 }
 
 @media (max-width: 620px) {
   .hero-quote {
     padding: 26px;
+  }
+  .quote-embed {
+    width: calc(100% + 52px);
+    margin: 22px -26px -26px;
   }
 }
 
