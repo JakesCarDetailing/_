@@ -469,6 +469,16 @@ section {
   max-width: 860px;
 }
 
+.quote-embed {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: #fff;
+  margin-top: 22px;
+  color-scheme: light;
+}
+
 @media (max-width: 620px) {
   .hero-quote {
     padding: 26px;

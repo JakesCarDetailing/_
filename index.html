@@ -253,83 +253,12 @@
         <div class="hero-quote reveal" id="quote">
           <h3>Request a quote</h3>
           <p>Tell us about your vehicle and we'll follow up with a recommendation — usually the same day.</p>
-          <form id="quoteForm" action="https://api.web3forms.com/submit" method="POST">
-            <input type="hidden" name="access_key" value="544e3408-7dc4-4d3a-82cb-b3f9355f31b6">
-            <input type="hidden" name="subject" value="New quote request — Jake's Car Detailing website">
-            <input type="hidden" name="from_name" value="Jake's Car Detailing website">
-            <input type="text" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off">
-            <div class="field-row">
-              <div class="field">
-                <label for="qFirstName">First name</label>
-                <input id="qFirstName" name="First name" type="text" required>
-              </div>
-              <div class="field">
-                <label for="qLastName">Last name</label>
-                <input id="qLastName" name="Last name" type="text" required>
-              </div>
-            </div>
-            <div class="field">
-              <label for="qEmail">Email</label>
-              <input id="qEmail" name="Email" type="email" required>
-            </div>
-            <div class="field">
-              <label for="qPhone">Phone</label>
-              <input id="qPhone" name="Phone" type="tel" required>
-            </div>
-            <div class="field">
-              <label for="qVehicle">Vehicle Year, Make, Model</label>
-              <input id="qVehicle" name="Vehicle Year, Make, Model" type="text" placeholder="e.g. 2021 Mazda3" required>
-            </div>
-
-            <div class="field">
-              <span class="field-legend">Type of Detail</span>
-              <div class="field-check-group">
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Full Exterior &amp; Interior"><span>Full Exterior &amp; Interior</span></label>
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Exterior"><span>Exterior</span></label>
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Interior"><span>Interior</span></label>
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Mold Remediation"><span>Mold Remediation</span></label>
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Polishing"><span>Polishing</span></label>
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Ceramic Coatings"><span>Ceramic Coatings</span></label>
-                <label class="field-check"><input type="checkbox" name="Type of Detail" value="Fleet Detailing"><span>Fleet Detailing</span></label>
-              </div>
-            </div>
-
-            <div class="field">
-              <span class="field-legend">Additional Add-ons</span>
-              <div class="field-check-group">
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Clay Bar Treatment"><span>Clay Bar Treatment</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Headlight Restoration"><span>Headlight Restoration</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Leather Conditioning"><span>Leather Conditioning</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Dressing for Plastics"><span>Dressing for Plastics</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Booster Seats"><span>Booster Seats</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Steam cleaning"><span>Steam cleaning</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Pet Hair"><span>Pet Hair</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Shampooing - Stain removal"><span>Shampooing - Stain removal</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Extraction"><span>Extraction</span></label>
-                <label class="field-check"><input type="checkbox" name="Additional Add-ons" value="Headliner"><span>Headliner</span></label>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="qFrequency">Frequency Of Service</label>
-              <select id="qFrequency" name="Frequency Of Service" required>
-                <option value="" disabled selected>Select an option</option>
-                <option>One time</option>
-                <option>Weekly</option>
-                <option>Bi-Weekly</option>
-                <option>Monthly</option>
-                <option>Semi Monthly</option>
-                <option>Quarterly</option>
-                <option>Semi Annually</option>
-                <option>Annually</option>
-              </select>
-              <p class="field-hint">This gives immediate insight for reoccurring services.</p>
-            </div>
-
-            <button class="btn btn-primary btn-block" type="submit" id="quoteSubmit">Submit</button>
-            <p class="form-note" id="quoteFormNote">We'll get an instant alert and follow up fast — usually the same day.</p>
-            <div class="form-status" id="quoteFormStatus" role="status" aria-live="polite"></div>
-          </form>
+          <iframe
+            class="quote-embed"
+            src="https://app.urable.com/form/gp8eAvjBryjv6zHmoeiD/8VzLuamSpAWqfwcU0rWt"
+            title="Request a quote — Jake's Car Detailing"
+            width="100%" height="1200"
+            scrolling="no" frameborder="0"></iframe>
         </div>
       </div>
     </div>
